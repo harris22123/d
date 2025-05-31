@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kyro Hosting Panel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-red: #ff0000;
+            --dark-gray: #1a1a1a;
+            --lighter-gray: #2C2F33;
+            --text-color: #ffffff;
+            --success-color: #43b581;
+            --error-color: #f04747;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--dark-gray) 0%, #000000 100%);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: rgba(44, 47, 51, 0.7);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--primary-red), #ff6b6b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+        }
+
+        .header p {
+            color: #a0a0a0;
+            font-size: 1.2rem;
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .panel-button {
+            position: relative;
+            background: var(--lighter-gray);
+            color: var(--text-color);
+            border: none;
+            padding: 1.2rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .panel-button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--primary-red), #ff6b6b);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1;
+        }
+
+        .panel-button:hover:before {
+            opacity: 1;
+        }
+
+        .panel-button span {
+            position: relative;
+            z-index: 2;
+        }
+
+        .panel-button i {
+            position: relative;
+            z-index: 2;
+            font-size: 1.2rem;
+        }
+
+        .panel-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255, 0, 0, 0.2);
+        }
+
+        #response {
+            margin-top: 2rem;
+            padding: 1rem;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 500;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+
+        #response.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .success {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .error {
+            background: var(--error-color);
+            color: white;
+        }
+
+        /* Status indicators */
+        .status-bar {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--success-color);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.7;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .button-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Kyro Hosting Panel</h1>
+            <p>Custom Matchmaking Control Center</p>
+        </div>
+
+        <div class="status-bar">
+            <div class="status-item">
+                <div class="status-dot"></div>
+                <span>System Online</span>
+            </div>
+            <div class="status-item">
+                <i class="fas fa-users"></i>
+                <span>Ready to Host</span>
+            </div>
+        </div>
+
+        <div class="button-grid">
+            <button class="panel-button" onclick="sendCommand('!s 1')">
+                <i class="fas fa-user"></i>
+                <span>Start Solo</span>
+            </button>
+            <button class="panel-button" onclick="sendCommand('!s 2')">
+                <i class="fas fa-user-friends"></i>
+                <span>Start Duo</span>
+            </button>
+            <button class="panel-button" onclick="sendCommand('!s 3')">
+                <i class="fas fa-users"></i>
+                <span>Start Trio</span>
+            </button>
+            <button class="panel-button" onclick="sendCommand('!s 4')">
+                <i class="fas fa-user-group"></i>
+                <span>Start Squad</span>
+            </button>
+            <button class="panel-button" onclick="sendCommand('!d')">
+                <i class="fas fa-paper-plane"></i>
+                <span>Dispatch</span>
+            </button>
+            <button class="panel-button" onclick="sendCommand('!st')">
+                <i class="fas fa-play"></i>
+                <span>Started</span>
+            </button>
+            <button class="panel-button" onclick="sendCommand('!c')">
+                <i class="fas fa-times"></i>
+                <span>Cancel</span>
+            </button>
+        </div>
+        <div id="response"></div>
+    </div>
+
+    <script>
+        async function sendCommand(command) {
+            const responseElement = document.getElementById('response');
+            try {
+                const response = await fetch('/command', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ command: command })
+                });
+
+                responseElement.className = response.ok ? 'success' : 'error';
+                responseElement.textContent = response.ok 
+                    ? `Command ${command} sent successfully!` 
+                    : 'Error sending command';
+                responseElement.classList.add('show');
+
+                // Add animation to the clicked button
+                const button = event.currentTarget;
+                button.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    button.style.transform = '';
+                }, 200);
+
+                setTimeout(() => {
+                    responseElement.classList.remove('show');
+                }, 3000);
+            } catch (error) {
+                console.error('Error:', error);
+                responseElement.className = 'error';
+                responseElement.textContent = 'Connection error';
+                responseElement.classList.add('show');
+                setTimeout(() => {
+                    responseElement.classList.remove('show');
+                }, 3000);
+            }
+        }
+    </script>
+</body>
+</html>
